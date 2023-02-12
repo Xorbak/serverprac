@@ -8,7 +8,7 @@ require("dotenv").config();
 //delete if not working
 app.use(
   cors({
-    origin: "https://xorbak.github.io",
+    origin: "*",
   })
 );
 
