@@ -1,9 +1,11 @@
 const express = require("express");
 const axios = require("axios");
 const { Configuration, OpenAIApi } = require("openai");
+const cors = require("cors");
 
 const app = express();
 require("dotenv").config();
+app.use(cors());
 
 app.listen(process.env.PORT || 5000, () => {
   console.log("server started on port 5000");
@@ -28,6 +30,7 @@ app.get("/quote", (req, res) => {
 });
 // image generation
 app.get("/image", (req, res) => {
+  res.json("working");
   const configuration = new Configuration({
     apiKey: process.env.REACT_APP_IMAGEGENERATION,
   });
