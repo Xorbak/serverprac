@@ -2,15 +2,21 @@ const express = require("express");
 const axios = require("axios");
 const { Configuration, OpenAIApi } = require("openai");
 const cors = require("cors");
-
+const rateLimit = require("express-rate-limit");
 const app = express();
+
+// allows use of envs
 require("dotenv").config();
-//delete if not working
+//allows all
 app.use(cors("*"));
+//rate limiter
+const limiter = rateLimit({ windowMs: 5 * 60 * 1000, max: 1 });
+app.use(limiter);
+
 app.listen(process.env.PORT || 5000, () => {
   console.log("server started on port 5000");
 });
-
+//Server home
 app.get("/", (req, res) => {
   res.json("Server loaded");
 });
