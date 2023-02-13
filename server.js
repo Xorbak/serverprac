@@ -6,7 +6,7 @@ const cors = require("cors");
 const app = express();
 require("dotenv").config();
 //delete if not working
-
+app.use(cors("*"));
 app.listen(process.env.PORT || 5000, () => {
   console.log("server started on port 5000");
 });
