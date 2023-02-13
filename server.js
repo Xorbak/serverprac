@@ -10,7 +10,7 @@ require("dotenv").config();
 //allows all
 app.use(cors("*"));
 //rate limiter
-const limiter = rateLimit({ windowMs: 5 * 60 * 1000, max: 1 });
+const limiter = rateLimit({ windowMs: 5 * 60 * 1000, max: 5 });
 app.use(limiter);
 
 app.listen(process.env.PORT || 5000, () => {
