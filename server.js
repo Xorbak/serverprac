@@ -10,7 +10,7 @@ require("dotenv").config();
 //allows all
 app.use(cors("*"));
 //rate limiter
-const limiter = rateLimit({ windowMs: 5 * 60 * 1000, max: 5 });
+const limiter = rateLimit({ windowMs: 5 * 60 * 1000, max: 10 });
 app.use(limiter);
 
 app.listen(process.env.PORT || 5000, () => {
@@ -51,4 +51,23 @@ app.get("/image", (req, res) => {
     res.json(result.data);
   };
   generateImage();
+});
+
+app.get("/chat", (req, res) => {
+  const configuration = new Configuration({
+    apiKey: process.env.REACT_APP_IMAGEGENERATION,
+  });
+  const openai = new OpenAIApi(configuration);
+  const generateChat = async (p) => {
+    const result = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: req.query.input,
+      temperature: 0,
+      max_tokens: 2000,
+    });
+
+    console.log(result);
+    res.json(result.data.choices[0]);
+  };
+  generateChat();
 });
