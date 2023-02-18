@@ -44,7 +44,7 @@ app.get("/image", (req, res) => {
     const result = await openai.createImage({
       prompt: req.query.input,
       n: 1,
-      size: "256x256",
+      size: "1024x1024",
     });
 
     console.log(result.data.data[0].url);
