@@ -10,7 +10,7 @@ require("dotenv").config();
 //allows all
 app.use(cors("*"));
 //rate limiter
-const limiter = rateLimit({ windowMs: 5 * 60 * 1000, max: 1000 });
+const limiter = rateLimit({ windowMs: 5 * 60 * 1000, max: 10 });
 app.use(limiter);
 
 app.listen(process.env.PORT || 5000, () => {
@@ -45,7 +45,7 @@ app.get("/image", (req, res) => {
     const result = await openai.createImage({
       prompt: req.query.input,
       n: 1,
-      size: "1024x1024",
+      size: "512x512",
     });
 
     console.log(result.data.data[0].url);
