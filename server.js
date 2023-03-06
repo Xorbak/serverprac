@@ -10,7 +10,7 @@ require("dotenv").config();
 //allows all
 app.use(cors("*"));
 //rate limiter
-const limiter = rateLimit({ windowMs: 5 * 60 * 1000, max: 10 });
+const limiter = rateLimit({ windowMs: 5 * 60 * 1000, max: 100 });
 app.use(limiter);
 
 app.listen(process.env.PORT || 5000, () => {
@@ -140,6 +140,7 @@ app.get("/todo", (req, res) => {
       },
     },
   };
+
   axios.request(options).then((result) => {
     console.log(req);
     res.json(result.data);
@@ -225,6 +226,110 @@ app.get("/todoget", (req, res) => {
       collection: "todo",
       database: "xorbakData",
       dataSource: "Cluster0",
+    },
+  };
+  axios.request(options).then((result) => {
+    res.json(result.data);
+  });
+});
+//------------------------------------------------------------------task management
+//logging in
+app.get("/db", (req, res) => {
+  const options = {
+    method: "POST",
+    url: `${process.env.REACT_APP_DBCALL}/find`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Request-Headers": "*",
+      "api-key": process.env.REACT_APP_DBAPI,
+    },
+    data: {
+      collection: "users",
+      database: "manageThis",
+      dataSource: "Cluster0",
+    },
+  };
+  axios.request(options).then((result) => {
+    const userData = result.data.documents.filter((i) => {
+      return (
+        i.username == req.query.username && i.password == req.query.password
+      );
+    });
+    const currentUserId = userData[0]
+      ? {
+          id: userData[0]._id,
+          name: userData[0].name,
+          surname: userData[0].surname,
+          username: userData[0].username,
+        }
+      : { error: "incorrect username or password" };
+    res.json(currentUserId);
+  });
+});
+// pull the correct task containers
+app.get("/dbstatusContainers", (req, res) => {
+  const options = {
+    method: "POST",
+    url: `${process.env.REACT_APP_DBCALL}/find`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Request-Headers": "*",
+      "api-key": process.env.REACT_APP_DBAPI,
+    },
+    data: {
+      collection: "taskContainers",
+      database: "manageThis",
+      dataSource: "Cluster0",
+      filter: { user_id: req.query.user_id },
+    },
+  };
+  axios.request(options).then((result) => {
+    res.json(result.data);
+  });
+});
+//pull the tasks
+app.get("/dbtasks", (req, res) => {
+  const options = {
+    method: "POST",
+    url: `${process.env.REACT_APP_DBCALL}/find`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Request-Headers": "*",
+      "api-key": process.env.REACT_APP_DBAPI,
+    },
+    data: {
+      collection: "tasks",
+      database: "manageThis",
+      dataSource: "Cluster0",
+      filter: { user_id: req.query.user_id },
+    },
+  };
+  axios.request(options).then((result) => {
+    res.json(result.data);
+  });
+});
+
+//===============================creating user
+
+app.get("/dbcreateuser", (req, res) => {
+  const options = {
+    method: "POST",
+    url: `${process.env.REACT_APP_DBCALL}/insertOne`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Request-Headers": "*",
+      "api-key": process.env.REACT_APP_DBAPI,
+    },
+    data: {
+      collection: "users",
+      database: "manageThis",
+      dataSource: "Cluster0",
+      document: {
+        username: req.query.username,
+        name: "insertTest",
+        surname: "insertTEst",
+        password: req.query.password,
+      },
     },
   };
   axios.request(options).then((result) => {
