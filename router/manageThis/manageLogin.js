@@ -1,6 +1,6 @@
 const express = require("express");
 const axios = require("axios");
-
+const bcrypt = require("bcrypt");
 const manageLogin = express.Router();
 
 manageLogin.get("/", (req, res) => {
@@ -20,9 +20,10 @@ manageLogin.get("/", (req, res) => {
   };
   axios.request(options).then((result) => {
     const userData = result.data.documents.filter((i) => {
-      return (
-        i.username == req.query.username && i.password == req.query.password
-      );
+      const activeUser =
+        i.username == "hash" && bcrypt.compare("1234", i.password);
+
+      return activeUser;
     });
     const currentUserId = userData[0]
       ? {
@@ -31,7 +32,7 @@ manageLogin.get("/", (req, res) => {
           surname: userData[0].surname,
           username: userData[0].username,
         }
-      : { error: "incorrect username or password" };
+      : { error: "Incorrect username or password" };
     res.json(currentUserId);
   });
 });

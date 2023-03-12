@@ -2,7 +2,10 @@ const express = require("express");
 const quoteAdd = require("./quoteAdd");
 const axios = require("axios");
 const quote = express.Router();
-
+const rateLimit = require("express-rate-limit");
+const limiter = rateLimit({ windowMs: 1 * 60 * 1000, max: 20 });
+const app = express();
+app.use(limiter);
 quote.get("/", (req, res) => {
   const options = {
     method: "POST",
