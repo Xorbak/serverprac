@@ -6,6 +6,8 @@ const manageTask = require("./managetask");
 const manageNewUser = require("./manageNewUser");
 const rateLimit = require("express-rate-limit");
 const checkNewUser = require("./taskCheckUser");
+const taskUpdate = require("./manageUpdate");
+const taskAdd = require("./manageAddTask");
 
 const app = express();
 const limiter = rateLimit({ windowMs: 5 * 60 * 1000, max: 100 });
@@ -21,4 +23,7 @@ manageThisRouter.use("/container", manageContainer);
 manageThisRouter.use("/task", manageTask);
 manageThisRouter.use("/newuser", manageNewUser);
 manageThisRouter.use("/check", checkNewUser);
+manageThisRouter.use("/update", taskUpdate);
+manageThisRouter.use("/add", taskAdd);
+
 module.exports = manageThisRouter;

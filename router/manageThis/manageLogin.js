@@ -21,7 +21,8 @@ manageLogin.get("/", (req, res) => {
   axios.request(options).then((result) => {
     const userData = result.data.documents.filter((i) => {
       const activeUser =
-        i.username == "hash" && bcrypt.compare("1234", i.password);
+        i.username == req.query.username &&
+        bcrypt.compare(req.query.password, i.password);
 
       return activeUser;
     });
