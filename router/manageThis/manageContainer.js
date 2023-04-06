@@ -51,4 +51,25 @@ manageContainer.get("/addContainer", (req, res) => {
   });
 });
 
+manageContainer.get("/deleteContainer", (req, res) => {
+  const options = {
+    method: "POST",
+    url: `${process.env.REACT_APP_DBCALL}/deleteOne`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Request-Headers": "*",
+      "api-key": process.env.REACT_APP_DBAPI,
+    },
+    data: {
+      collection: "taskContainers",
+      database: "manageThis",
+      dataSource: "Cluster0",
+      filter: { user_id: "1678701490173", container: "pie" },
+    },
+  };
+  axios.request(options).then((result) => {
+    res.json(result.data);
+  });
+});
+
 module.exports = manageContainer;
