@@ -68,7 +68,24 @@ manageContainer.get("/deleteContainer", (req, res) => {
     },
   };
   axios.request(options).then((result) => {
-    res.json(result.data);
+    const deleteConnectedTask = {
+      method: "POST",
+      url: `${process.env.REACT_APP_DBCALL}/deleteMany`,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Request-Headers": "*",
+        "api-key": process.env.REACT_APP_DBAPI,
+      },
+      data: {
+        collection: "tasks",
+        database: "manageThis",
+        dataSource: "Cluster0",
+        filter: { user_id: req.query.user_id, container: req.query.container },
+      },
+    };
+    axios
+      .request(deleteConnectedTask)
+      .then((response) => res.json(response.data));
   });
 });
 
