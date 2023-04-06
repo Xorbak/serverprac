@@ -64,7 +64,7 @@ manageContainer.get("/deleteContainer", (req, res) => {
       collection: "taskContainers",
       database: "manageThis",
       dataSource: "Cluster0",
-      filter: { user_id: "1678701490173", container: "pie" },
+      filter: { user_id: req.query.user_id, container: req.query.container },
     },
   };
   axios.request(options).then((result) => {
