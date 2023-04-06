@@ -24,4 +24,31 @@ manageContainer.get("/", (req, res) => {
   });
 });
 
+manageContainer.get("/addContainer", (req, res) => {
+  const options = {
+    method: "POST",
+    url: `${process.env.REACT_APP_DBCALL}/insertOne`,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Request-Headers": "*",
+      "api-key": process.env.REACT_APP_DBAPI,
+    },
+    data: {
+      collection: "taskContainers",
+      database: "manageThis",
+      dataSource: "Cluster0",
+      document: {
+        status_id: "servertest",
+        user_id: "1678701490173",
+        container: "servertest",
+      },
+    },
+  };
+
+  axios.request(options).then((result) => {
+    console.log(req);
+    res.json(result.data);
+  });
+});
+
 module.exports = manageContainer;
