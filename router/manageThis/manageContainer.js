@@ -38,9 +38,9 @@ manageContainer.get("/addContainer", (req, res) => {
       database: "manageThis",
       dataSource: "Cluster0",
       document: {
-        status_id: "servertest",
-        user_id: "1678701490173",
-        container: "servertest",
+        status_id: req.query.status_id,
+        user_id: req.query.user_id,
+        container: req.query.container,
       },
     },
   };
