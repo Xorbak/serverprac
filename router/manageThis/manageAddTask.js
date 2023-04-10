@@ -21,7 +21,8 @@ taskAdd.get("/", (req, res) => {
         user_id: req.query.user_id,
         container: req.query.container,
         task: req.query.task,
-        created: req.query.createds,
+        created: req.query.created,
+        discription: req.query.discription,
       },
     },
   };
