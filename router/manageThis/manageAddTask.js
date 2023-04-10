@@ -23,6 +23,7 @@ taskAdd.get("/", (req, res) => {
         task: req.query.task,
         created: req.query.created,
         discription: req.query.discription,
+        due: req.query.due,
       },
     },
   };
